@@ -1,0 +1,119 @@
+version: '3'
+
+services:
+
+  authenticationDatabase:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    networks:
+      - authNetwork
+    volumes:
+      - authVolume:/var/lib/mysql
+
+  authenticationdbmigration:
+    image: authenticationdbmigration
+    environment:
+      - DATABASE_URL=authenticationDatabase
+    depends_on:
+      authenticationDatabase:
+        condition: service_healthy
+    networks:
+      - authNetwork
+
+  authentication:
+    image: authentication
+    environment:
+      - DATABASE_URL=authenticationDatabase
+    depends_on:
+      - authenticationDBMigration
+    ports:
+      - "5002:5002"
+    networks:
+      - authNetwork
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - authNetwork
+      - shopNetwork
+
+  shopDatabase:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    networks:
+      - shopNetwork
+      - customerNetwork
+      - courierNetwork
+      - ownerNetwork
+    volumes:
+      - shopVolume:/var/lib/mysql
+
+  shopDBMigration:
+    image: shopdbmigration
+    environment:
+      - DATABASE_URL=shopDatabase
+    depends_on:
+      shopDatabase:
+        condition: service_healthy
+    networks:
+      - shopNetwork
+
+  courier:
+    image: courier
+    #deploy:
+    #  replicas: 3
+    environment:
+      - DATABASE_URL=shopDatabase
+    depends_on:
+      - shopDBMigration
+    ports:
+      - "5006:5006"
+    networks:
+      - courierNetwork
+
+  customer:
+    image: customer
+    #deploy:
+    #  replicas: 3
+    environment:
+      - DATABASE_URL=shopDatabase
+    depends_on:
+      - shopDBMigration
+    ports:
+      - "5004:5004"
+    networks:
+      - customerNetwork
+
+  owner:
+    image: owner
+    environment:
+      - DATABASE_URL=shopDatabase
+    depends_on:
+      - shopDBMigration
+    ports:
+      - "5005:5005"
+    networks:
+      - ownerNetwork
+
+networks:
+  authNetwork:
+  shopNetwork:
+
+  courierNetwork:
+  customerNetwork:
+  ownerNetwork:
+volumes:
+  authVolume:
+  shopVolume:

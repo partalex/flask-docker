@@ -93,6 +93,7 @@ def run_level2_tests ( with_authentication, authentication_url, customer_url, co
         # These tests will be skipped if --with-blockchain is not spefied
         ["post", courier_url + "/pick_up_order", set_up_user_headers_with_blockchain ( with_authentication, False, authentication_url, with_blockchain, None ),                                           { }, get_order_to_pickup_error4 ( ), { }, 400, { "message": "Missing address."         }, equals, 1],
         ["post", courier_url + "/pick_up_order", set_up_user_headers_with_blockchain ( with_authentication, False, authentication_url, with_blockchain, "" ),                                             { }, get_order_to_pickup_error4 ( ), { }, 400, { "message": "Missing address."         }, equals, 1],
+        # TODO zakomentarisan
         ["post", courier_url + "/pick_up_order", set_up_user_headers_with_blockchain ( with_authentication, False, authentication_url, with_blockchain, "aaaa" ),                                         { }, get_order_to_pickup_error4 ( ), { }, 400, { "message": "Invalid address."         }, equals, 1],
         ["post", courier_url + "/pick_up_order", with_blockchain_wrapper ( set_up_pickup_order_test, with_authentication, authentication_url, courier_url, error, with_blockchain, courier_private_key ), { },                            { }, { }, 400, { "message": "Transfer not complete."   }, equals, 1],
         
