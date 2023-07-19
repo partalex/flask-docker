@@ -4,9 +4,9 @@ from flask import Flask, Response, request
 from flask_jwt_extended import JWTManager, get_jwt_identity
 from sqlalchemy import and_
 
-from shop.configuration import Configuration
+from configuration import Configuration
 from decoraterRole import roleCheck
-from shop.models import database, Order, OrderStatus, Status
+from models import database, Order, OrderStatus, Status
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
@@ -25,7 +25,7 @@ def orders_to_deliver():
     allOrders = {"orders": []}
     for order in ordersCreated:
         orderData = {
-            "id": order.statusID,
+            "id": order.orderID,
             "email": Order.query.filter(Order.id == order.orderID).first().email,
         }
         allOrders["orders"].append(orderData)
@@ -56,9 +56,9 @@ def pick_up_order():
     if Exception is None:
         return Response(json.dumps({'message': 'Missing address.'}), status=400)
 
-    statusCreatedId = Status.query.filter(Status.name == "CREATED").first().id
     orderStatus = OrderStatus.query.filter(OrderStatus.orderID == orderId).first()
 
+    statusCreatedId = Status.query.filter(Status.name == "CREATED").first().id
     if orderStatus.statusID != statusCreatedId:
         return Response(json.dumps({'message': 'Invalid order id.'}), status=400)
 

@@ -48,21 +48,8 @@ def update():
 
         newProduct = Product.query.filter(Product.name == name).first()
 
-        # update product
         if newProduct:
             return Response(json.dumps({"message": f"Product {name} already exists."}), status=400)
-
-            # categoriesExist = [cat.name for cat in product.categories]
-            # isDifferent = False
-            # for categoryName in categories:
-            #     if categoryName in categoriesExist:
-            #         continue
-            #     isDifferent = True
-            #     break
-            # # ne obradjuje se!
-            # if isDifferent:
-            #     continue
-            # product.number += 1
         else:
             products.append({
                 "categories": categories,
@@ -143,6 +130,8 @@ def product_statistics():
         productDict[product[0]]["sold"] += product[2]
 
     for product in productsNotStatusComplete:
+        if product[0] not in productDict:
+            productDict[product[0]] = {"sold": 0, "waiting": 0}
         productDict[product[0]]["waiting"] += product[2]
 
     for product in productDict:
@@ -158,15 +147,38 @@ def product_statistics():
 @app.route("/category_statistics", methods=["GET"])
 @roleCheck("owner")
 def category_statistics():
+    statusCompleteId = Status.query.filter(Status.name == "COMPLETE").first().id
+
+    result = database.session.query(
+        Category.name,
+        func.sum(ProductOrder.quantity).label("quantity")
+    ).join(
+        ProductCategory, Category.id == ProductCategory.categoryID
+    ).join(
+        ProductOrder, ProductCategory.productID == ProductOrder.productID
+    ).join(
+        OrderStatus, ProductOrder.orderID == OrderStatus.orderID
+    ).filter(
+        statusCompleteId == OrderStatus.statusID
+    ).group_by(
+        Category.name
+    ).order_by(
+        func.sum(ProductOrder.quantity).desc(), Category.name.asc()
+    ).all()
+
+    productsCategoryNames = {}
+
+    for category in result:
+        productsCategoryNames[category[0]] = int(category[1])
+
+    for category in Category.query.all():
+        if category.name not in productsCategoryNames:
+            productsCategoryNames[category.name] = 0
+
     statistics = []
 
-    totalQunatity = func.coalesce(func.sum(ProductOrder.quantity), 0)
-    categories = Category.query.outerjoin(ProductCategory, Category.id == ProductCategory.categoryID).outerjoin(
-        ProductOrder, ProductCategory.productID == ProductOrder.productID).group_by(Category.id).order_by(
-        totalQunatity.desc()).order_by(Category.name).with_entities(Category.name).all()
-
-    for category in categories:
-        statistics.append(category[0])
+    for category in productsCategoryNames:
+        statistics.append(category)
     return Response(json.dumps({"statistics": statistics}), status=200)
 
 

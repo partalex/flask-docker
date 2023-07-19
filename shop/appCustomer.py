@@ -3,11 +3,11 @@ import json
 
 from flask import Flask, request, Response, jsonify
 from flask_jwt_extended import JWTManager, get_jwt_identity
-from shop.models import Product, Category, ProductCategory, Order, OrderStatus, ProductOrder, database, Status
+from models import Product, Category, ProductCategory, Order, OrderStatus, ProductOrder, database, Status
 from sqlalchemy import and_
 
 from decoraterRole import roleCheck
-from shop.configuration import Configuration
+from configuration import Configuration
 
 # from pprint import pprint
 

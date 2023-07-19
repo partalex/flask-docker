@@ -21,5 +21,5 @@ while True:
             database.session.add(status2)
             database.session.add(status3)
             database.session.commit()
-            print("Dodati Statusi Porudzbine")
+            print("Added statutes.")
     break

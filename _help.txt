@@ -1,6 +1,23 @@
 DELETE FROM orders;
 DELETE FROM products;
+DELETE FROM categories;
+ALTER TABLE categories AUTO_INCREMENT = 0;
 ALTER TABLE orders AUTO_INCREMENT = 0;
 ALTER TABLE products AUTO_INCREMENT = 0;
 ALTER TABLE orderstatus AUTO_INCREMENT = 0;
 ALTER TABLE productorder AUTO_INCREMENT = 0;
+ALTER TABLE productcategory AUTO_INCREMENT = 0;
+ALTER TABLE orders AUTO_INCREMENT = 0;
+
+delete from users where forename="Jane";
+delete from users where forename="John";
+
+python manage.py db revision --rev-id d12b4bd97a09
+python manage.py db init
+python manage.py db migrate -m "Initial migrate"
+python manage.py db upgrade
+
+
+authenticationDatabase
+shopDatabase
+
