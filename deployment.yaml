@@ -37,7 +37,7 @@ services:
     depends_on:
       - authDbMigration
     ports:
-      - "5002:5002"
+      - "5000:5000"
     networks:
       - authNet
 
@@ -73,7 +73,7 @@ services:
     depends_on:
       - storeDbMigration
     ports:
-      - "5004:5004"
+      - "5002:5002"
     networks:
       - storeNet
 
@@ -84,7 +84,7 @@ services:
     depends_on:
       - storeDbMigration
     ports:
-      - "5006:5006"
+      - "5003:5003"
     networks:
       - storeNet
 
@@ -95,7 +95,7 @@ services:
     depends_on:
       - storeDbMigration
     ports:
-      - "5005:5005"
+      - "5001:5001"
     networks:
       - storeNet
 
