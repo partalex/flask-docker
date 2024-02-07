@@ -19,6 +19,9 @@ services:
       - authVolume:/var/lib/mysql
 
   authDbMigration:
+    build:
+      context: .
+      dockerfile: authDbMigration.dockerfile
     image: authdbmigration
     environment:
       - DATABASE_URL=authDb
@@ -30,6 +33,9 @@ services:
       - authNet
 
   auth:
+    build:
+      context: .
+      dockerfile: auth.dockerfile
     image: auth
     environment:
       - DATABASE_URL=authDb
@@ -57,6 +63,9 @@ services:
       - storeVolume:/var/lib/mysql
 
   storeDbMigration:
+    build:
+      context: .
+      dockerfile: storeDbMigration.dockerfile
     image: storedbmigration
     environment:
       - DATABASE_URL=storeDb
@@ -67,6 +76,9 @@ services:
       - storeNet
 
   customer:
+    build:
+      context: .
+      dockerfile: customer.dockerfile
     image: customer
     environment:
       - DATABASE_URL=storeDb
@@ -78,6 +90,9 @@ services:
       - storeNet
 
   courier:
+    build:
+      context: .
+      dockerfile: courier.dockerfile
     image: courier
     environment:
       - DATABASE_URL=storeDb
@@ -88,7 +103,24 @@ services:
     networks:
       - storeNet
 
+  money:
+    build:
+      context: .
+      dockerfile: money.dockerfile
+    image: money
+    environment:
+      - DATABASE_URL=storeDb
+    depends_on:
+      - storeDbMigration
+    ports:
+      - "5004:5004"
+    networks:
+      - storeNet
+
   owner:
+    build:
+      context: .
+      dockerfile: owner.dockerfile
     image: owner
     environment:
       - DATABASE_URL=storeDb

@@ -10,8 +10,14 @@
 # python main.py --type level2 --with-authentication --authentication-url http://127.0.0.1:5000 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
 # python main.py --type level3 --with-authentication --authentication-url http://127.0.0.1:5000 --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
 python main.py --type all --authentication-url http://127.0.0.1:5000 --jwt-secret JWT_SECRET_DEV_KEY --roles-field roles --owner-role owner --customer-role customer --courier-role courier --with-authentication --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
-# docker-compose -f deployment.yaml up -d
-# docker-compose -f deployment.yaml down -v
+
+docker-compose -f deployment.yaml up -d
+docker-compose -f deployment.yaml down -v
+
+# baza server http://localhost:8080/
+# Server: storeDb:3306
+# Username: root
+# Password: root
 
 # TESTS WITH BLOCKCHAIN
 
