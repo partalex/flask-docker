@@ -9,21 +9,9 @@
 # python main.py --type level1 --with-authentication --authentication-url http://127.0.0.1:5000 --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002
 # python main.py --type level2 --with-authentication --authentication-url http://127.0.0.1:5000 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
 # python main.py --type level3 --with-authentication --authentication-url http://127.0.0.1:5000 --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
-# python main.py --type all --authentication-url http://127.0.0.1:5000 --jwt-secret JWT_SECRET_DEV_KEY --roles-field roles --owner-role owner --customer-role customer --courier-role courier --with-authentication --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
-
-1.
-python main.py --type authentication --authentication-url http://192.168.1.6:5002 --jwt-secret JWT_SECRET_DEV_KEY --roles-field roles --owner-role owner --customer-role customer --courier-role courier
-2.
-python main.py --type level0 --with-authentication --authentication-url http://192.168.1.6:5002 --owner-url http://192.168.1.6:5005 --customer-url http://192.168.1.6:5004
-3.
-python main.py --type level1 --with-authentication --authentication-url http://192.168.1.6:5002 --owner-url http://192.168.1.6:5005 --customer-url http://192.168.1.6:5004
-4.
-python main.py --type level2 --with-authentication --authentication-url http://192.168.1.6:5002 --customer-url http://192.168.1.6:5004 --owner-url http://192.168.1.6:5005 --courier-url http://192.168.1.6:5006
-5.
-python main.py --type level3 --with-authentication --authentication-url http://192.168.1.6:5002 --customer-url http://192.168.1.6:5004 --owner-url http://192.168.1.6:5005 --courier-url http://192.168.1.6:5006
-6.
-python main.py --type all --authentication-url http://192.168.1.6:5002 --jwt-secret JWT_SECRET_DEV_KEY --roles-field roles --owner-role owner --customer-role customer --courier-role courier --with-authentication --owner-url http://192.168.1.6:5005 --customer-url http://192.168.1.6:5004 --courier-url http://192.168.1.6:5006
-
+python main.py --type all --authentication-url http://127.0.0.1:5000 --jwt-secret JWT_SECRET_DEV_KEY --roles-field roles --owner-role owner --customer-role customer --courier-role courier --with-authentication --owner-url http://127.0.0.1:5001 --customer-url http://127.0.0.1:5002 --courier-url http://127.0.0.1:5003
+# docker-compose -f deployment.yaml up -d
+# docker-compose -f deployment.yaml down -v
 
 # TESTS WITH BLOCKCHAIN
 
